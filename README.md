@@ -325,7 +325,7 @@ Your feedback is appreciated! If you have specific problems or bugs with this SD
 Contributing
 ------------
 
-1. Fork it ( https://github.com/COINQVEST/php-merchant-sdk/fork )
+1. Fork it ( https://github.com/COINQVEST/nodejs-merchant-sdk/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
