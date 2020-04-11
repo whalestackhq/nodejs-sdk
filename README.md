@@ -35,8 +35,7 @@ Get your API key and secret here: https://www.coinqvest.com/en/api-settings
 Creates a customer object, which can be associated with checkouts, payments, and invoices. Checkouts associated with a customer generate more transaction details, help with your accounting, and can automatically create invoices for your customer and yourself.
 
 ```javascript
-client.post(
-    '/customer',
+client.post('/customer',
     {
         customer:{
             email: 'john@doe.com',
@@ -75,8 +74,7 @@ Using this endpoint, your server submits a set of parameters, such as the paymen
 Upon visiting the URL, your customer is presented with a checkout page hosted on COINQVEST servers. This page displays all the information the customer needs to complete payment.
 
 ```javascript
-client.post(
-    '/checkout/hosted',
+client.post('/checkout/hosted',
     {
         charge:{
             customerId: customerId, // associates this charge with a customer
@@ -127,8 +125,7 @@ client.post(
 Once the payment is captured we notify you via email, [WEBHOOK /payment](https://www.coinqvest.com/en/api-docs#webhook-payment), or you can poll [GET /checkout](https://www.coinqvest.com/en/api-docs#get-checkout) for payment status updates:
 
 ```javascript
-client.get(
-    '/checkout',
+client.get('/checkout',
     {id: checkoutId},
     function(response) {
         console.log(response.status);
@@ -148,8 +145,7 @@ client.get(
 
 **Query your USD Wallet** (https://www.coinqvest.com/en/api-docs#get-wallet)
 ```javascript
-client.get(
-    '/wallet',
+client.get('/wallet',
     {assetCode: 'USD'},
     function(response) {
         console.log(response.status);
@@ -160,8 +156,7 @@ client.get(
 
 **Query all Wallets** (https://www.coinqvest.com/en/api-docs#get-wallets)
 ```javascript
-client.get(
-    '/wallets',
+client.get('/wallets',
     null,
     function(response) {
         console.log(response.status);
@@ -172,8 +167,7 @@ client.get(
 
 **Withdraw to your NGN Bank Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
-client.post(
-    '/withdrawal',
+client.post('/withdrawal',
     {
         sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
         sourceAmount: 100,
@@ -192,8 +186,7 @@ client.post(
 
 **Withdraw to your Bitcoin Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
-client.post(
-    '/withdrawal',
+client.post('/withdrawal',
     {
         sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
         sourceAmount: 100,
@@ -211,8 +204,7 @@ client.post(
 
 **Withdraw to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
-client.post(
-    '/withdrawal',
+client.post('/withdrawal',
     {
         sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
         sourceAmount: 100,
@@ -232,8 +224,7 @@ client.post(
 
 **Update a Customer** (https://www.coinqvest.com/en/api-docs#put-customer)
 ```javascript
-client.put(
-    '/customer',
+client.put('/customer',
     {customer:{id: 'CUSTOMER-ID', email: 'john@doe-2.com'}},
     function (response) {
         console.log(response.status);
@@ -244,8 +235,7 @@ client.put(
 
 **Delete a Customer** (https://www.coinqvest.com/en/api-docs#delete-customer)
 ```javascript
-client.delete(
-    '/customer',
+client.delete('/customer',
     {id: 'CUSTOMER-ID'},
     function (response) {
         console.log(response.status);
@@ -256,8 +246,7 @@ client.delete(
 
 **List your 250 newest customers** (https://www.coinqvest.com/en/api-docs#get-customers)
 ```javascript
-client.get(
-    '/wallet',
+client.get('/wallet',
     {limit: 250},
     function(response) {
         console.log(response.status);
@@ -268,8 +257,7 @@ client.get(
 
 **List all available blockchains** (https://www.coinqvest.com/en/api-docs#get-blockchains)
 ```javascript
-client.get(
-    '/blockchains',
+client.get('/blockchains',
     null,
     function(response) {
         console.log(response.status);

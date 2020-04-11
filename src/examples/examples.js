@@ -17,8 +17,7 @@ const client = new CoinqvestClient(
 /**
  Invoke a request to GET /auth-test (https://www.coinqvest.com/en/api-docs#get-auth-test) to see if everything worked
  */
-client.get(
-    '/auth-test',
+client.get('/auth-test',
     null,
     function(response) {
         // The API should return an HTTP status code of 200 if the request was successfully processed, let's have a look.
@@ -30,8 +29,7 @@ client.get(
 /**
  Check our USD wallet balance using GET /wallet (https://www.coinqvest.com/en/api-docs#get-wallet)
  */
-client.get(
-    '/wallet',
+client.get('/wallet',
     {assetCode: 'USD'},
     function(response) {
         console.log(response.status);
@@ -46,8 +44,7 @@ client.get(
  Invoke POST /customer (https://www.coinqvest.com/en/api-docs#post-customer) to create a new customer object.
  Tip: At a minimum a customer needs an email address, but it's better to provide a full billing address for invoices.
  */
-client.post(
-    '/customer',
+client.post('/customer',
     {customer:{
         email: 'john@doe.com',
         firstname: 'John',
@@ -78,8 +75,7 @@ client.post(
         // We now have a customer. Let's create a checkout for him/her.
         // This creates a hosted checkout, which will provide a payment interface hosted on COINQVEST servers
 
-        client.post(
-            '/checkout/hosted',
+        client.post('/checkout/hosted',
             {
                 charge:{
                     customerId: customerId, // associates this charge with a customer
@@ -130,8 +126,7 @@ client.post(
 /**
  you can update a customer object like this
  */
-client.put(
-    '/customer',
+client.put('/customer',
     {customer:{id: 'CUSTOMER-ID', email: 'john@doe-2.com'}},
     function (response) {
         console.log(response.status);
@@ -142,8 +137,7 @@ client.put(
 /**
  delete a customer when not needed anymore
  */
-client.delete(
-    '/customer',
+client.delete('/customer',
     {id: 'CUSTOMER-ID'},
     function (response) {
         console.log(response.status);
