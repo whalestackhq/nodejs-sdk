@@ -1,0 +1,26 @@
+{
+  "author": "COINQVEST Ltd.",
+  "name": "coinqvest-merchant-sdk",
+  "description": "Official COINQVEST Merchant API SDK for NodeJS by www.coinqvest.com",
+  "version": "0.0.2",
+  "main": "./lib/index.js",
+  "keywords": [
+    "payment-gateway",
+    "payment-integration",
+    "payment-processing",
+    "cryptocurrencies",
+    "cryptocurrency",
+    "digital-currencies",
+    "digital-currency",
+    "payment-processor"
+  ],
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://www.coinqvest.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/COINQVEST/nodejs-merchant-sdk"
+  }
+}
