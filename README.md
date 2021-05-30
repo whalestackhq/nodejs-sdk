@@ -11,7 +11,7 @@ Read our Merchant API [development guide](https://www.coinqvest.com/en/blog/guid
 Requirements
 ------------
 * NodeJS >= 10.14.0
-* axios >= 0.19.2
+* axios >= 0.21.1
 
 Installation with npm
 ---------------------
