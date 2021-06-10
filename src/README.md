@@ -122,7 +122,7 @@ client.post('/checkout/hosted',
 
 **Monitor Payment State** (https://www.coinqvest.com/en/api-docs#get-checkout)
 
-Once the payment is captured we notify you via email, [WEBHOOK /payment](https://www.coinqvest.com/en/api-docs#webhook-payment), or you can poll [GET /checkout](https://www.coinqvest.com/en/api-docs#get-checkout) for payment status updates:
+Once the payment is captured we notify you via email, [webhook](https://www.coinqvest.com/en/api-docs#webhook-concepts). You can also poll [GET /checkout](https://www.coinqvest.com/en/api-docs#get-checkout) for payment status updates:
 
 ```javascript
 client.get('/checkout',
