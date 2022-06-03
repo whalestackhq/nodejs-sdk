@@ -165,30 +165,11 @@ client.get('/wallets',
 );
 ```
 
-**Withdraw to your NGN Bank Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
+**Withdraw USDC to your Bitcoin Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
 client.post('/withdrawal',
     {
-        sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
-        sourceAmount: 100,
-        targetNetwork: 'NGN', // send to an NGN bank account
-        targetAccount: {
-            nuban: '3080494548',
-            bankName: 'FirstBank'
-        }
-    },
-    function (response) {
-        console.log(response.status);
-        console.log(response.data);
-    }
-);
-```
-
-**Withdraw to your Bitcoin Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
-```javascript
-client.post('/withdrawal',
-    {
-        sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
+        sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USDC wallet
         sourceAmount: 100,
         targetNetwork: 'BTC', // send to a BTC address
         targetAccount: {
@@ -202,15 +183,15 @@ client.post('/withdrawal',
 );
 ```
 
-**Withdraw to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
+**Withdraw USDC to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
 client.post('/withdrawal',
     {
-        sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
+        sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USDC wallet
         sourceAmount: 100,
         targetNetwork: 'XLM', // send to a Stellar account
         targetAccount: {
-            account: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23',
+            account: 'GDONUHZKLSYLDOZWR2TDW25GFXOBWCCKTPK34DLUVSOMFHLGURX6FNU6',
             memo: 'Exodus',
             memoType: 'text'
         }
@@ -255,9 +236,9 @@ client.get('/wallet',
 );
 ```
 
-**List all available blockchains** (https://www.coinqvest.com/en/api-docs#get-blockchains)
+**List all available assets** (https://www.coinqvest.com/en/api-docs#get-assets)
 ```javascript
-client.get('/blockchains',
+client.get('/assets',
     null,
     function(response) {
         console.log(response.status);
@@ -266,10 +247,10 @@ client.get('/blockchains',
 );
 ```
 
-**List all available fiat currencies** (https://www.coinqvest.com/en/api-docs#get-blockchains)
+**List all available networks** (https://www.coinqvest.com/en/api-docs#get-networks)
 ```javascript
 client.get(
-    '/fiat-currencies',
+    '/networks',
     null,
     function(response) {
         console.log(response.status);
@@ -304,11 +285,11 @@ client.get(
 }
 ```
 
-Please inspect https://www.coinqvest.com/en/api-docs for detailed API documentation or send us an email to service@coinqvest.com.
+Please inspect https://www.coinqvest.com/en/api-docs for detailed API documentation or email us at service@coinqvest.com if you have questions.
 
 Support and Feedback
 --------------------
-Your feedback is appreciated! If you have specific problems or bugs with this SDK, please file an issue on Github. For general feedback and support requests, send an email to service@coinqvest.com.
+We'd love to hear your feedback. If you have specific problems or bugs with this SDK, please file an issue on GitHub. For general feedback and support requests please email service@coinqvest.com.
 
 Contributing
 ------------
