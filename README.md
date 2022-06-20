@@ -78,7 +78,7 @@ client.post('/checkout/hosted',
     {
         charge:{
             customerId: customerId, // associates this charge with a customer
-            currency: 'USD', // specifies the billing currency
+            billingCurrency: 'USD', // specifies the billing currency
             lineItems: [{ // a list of line items included in this charge
                 description: 'T-Shirt',
                 netAmount: 10,
@@ -171,7 +171,7 @@ client.post('/withdrawal',
     {
         sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USDC wallet
         sourceAmount: 100,
-        targetNetwork: 'BTC', // send to a BTC address
+        targetNetwork: 'BITCOIN', // send to a Bitcoin address
         targetAccount: {
             address: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23'
         }
@@ -189,7 +189,7 @@ client.post('/withdrawal',
     {
         sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USDC wallet
         sourceAmount: 100,
-        targetNetwork: 'XLM', // send to a Stellar account
+        targetNetwork: 'STELLAR', // send to a Stellar account
         targetAccount: {
             account: 'GDONUHZKLSYLDOZWR2TDW25GFXOBWCCKTPK34DLUVSOMFHLGURX6FNU6',
             memo: 'Exodus',
