@@ -63,9 +63,9 @@ let customerId = response.data['customerId']; // store this persistently in your
 
 **Create a Hosted Checkout** (https://www.coinqvest.com/en/api-docs#post-checkout-hosted)
 
-Hosted checkouts are the simplest form of getting paid using the COINQVEST platform. 
+Hosted checkouts are the simplest form of getting paid using the COINQVEST platform.
 
-Using this endpoint, your server submits a set of parameters, such as the payment details including optional tax items, customer information, and settlement currency. Your server then receives a checkout URL in return, which is displayed back to your customer. 
+Using this endpoint, your server submits a set of parameters, such as the payment details including optional tax items, customer information, and settlement currency. Your server then receives a checkout URL in return, which is displayed back to your customer.
 
 Upon visiting the URL, your customer is presented with a checkout page hosted on COINQVEST servers. This page displays all the information the customer needs to complete payment.
 
@@ -73,7 +73,7 @@ Upon visiting the URL, your customer is presented with a checkout page hosted on
 let response = await client.post('/checkout/hosted', {
     charge:{
         customerId: customerId, // associates this charge with a customer
-        currency: 'USD', // specifies the billing currency
+        billingCurrency: 'USD', // specifies the billing currency
         lineItems: [{ // a list of line items included in this charge
             description: 'T-Shirt',
             netAmount: 10,
@@ -93,7 +93,7 @@ let response = await client.post('/checkout/hosted', {
             percent: 0.0825 // 8.25% CA sales tax
         }]
     },
-    settlementCurrency: 'EUR' // specifies in which currency you want to settle
+    settlementAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN' // your settlement asset as given by GET /assets (or ORIGIN to omit conversion)
 });
 
 console.log(response.status);
@@ -123,7 +123,7 @@ console.log(response.data);
 
 if (response.status === 200) {
     let state = response.data['checkout']['state'];
-    if (['COMPLETED'].includes(state)) {
+    if (state === 'CHECKOUT_COMPLETED') {
         console.log("The payment has completed and your account was credited. You can now ship the goods.");
     } else {
         // try again in 30 seconds or so...
@@ -147,28 +147,12 @@ console.log(response.status);
 console.log(response.data);
 ```
 
-**Withdraw to your NGN Bank Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
-```javascript
-let response = await client.post('/withdrawal', {
-    sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
-    sourceAmount: 100,
-    targetNetwork: 'NGN', // send to an NGN bank account
-    targetAccount: {
-        nuban: '3080494548',
-        bankName: 'FirstBank'
-    }
-});
-
-console.log(response.status);
-console.log(response.data);
-```
-
 **Withdraw to your Bitcoin Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
 let response = await client.post('/withdrawal', {
-    sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
+    sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USD wallet
     sourceAmount: 100,
-    targetNetwork: 'BTC', // send to a BTC address
+    targetNetwork: 'BITCOIN', // a target network as given by GET /networks
     targetAccount: {
         address: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23'
     }
@@ -178,15 +162,15 @@ console.log(response.status);
 console.log(response.data);
 ```
 
-**Withdraw to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
+**Withdraw USDC to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
 ```javascript
 let response = await client.post('/withdrawal', {
-    sourceAsset: 'USD:GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX', // withdraw from your USD wallet
+    sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USD wallet
     sourceAmount: 100,
-    targetNetwork: 'XLM', // send to a Stellar account
+    targetNetwork: 'STELLAR', // a target network as given by GET /networks
     targetAccount: {
         account: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23',
-        memo: 'Exodus',
+        memo: 'Transfer Note',
         memoType: 'text'
     }
 });
@@ -219,37 +203,44 @@ console.log(response.status);
 console.log(response.data);
 ```
 
+**List all available assets** (https://www.coinqvest.com/en/api-docs#get-assets)
+```javascript
+let response = await client.get('/assets');
+
+console.log(response.status);
+console.log(response.data);
+
 **List all available networks** (https://www.coinqvest.com/en/api-docs#get-networks)
 ```javascript
-let response = await client.get('/blockchains');
+let response = await client.get('/networks');
 
 console.log(response.status);
 console.log(response.data);
 ```
 
-**The response object** ([axios](https://github.com/axios/axios) HTTP response as given to your callback function) 
+**The response object** ([axios](https://github.com/axios/axios) HTTP response as given to your callback function)
 ```javascript
 {
-  // `data` is the response that was provided by the server
-  data: {},
+    // `data` is the response that was provided by the server
+    data: {},
 
-  // `status` is the HTTP status code from the server response
-  status: 200,
+    // `status` is the HTTP status code from the server response
+    status: 200,
 
-  // `statusText` is the HTTP status message from the server response
-  statusText: 'OK',
+        // `statusText` is the HTTP status message from the server response
+        statusText: 'OK',
 
-  // `headers` the HTTP headers that the server responded with
-  // All header names are lower cased and can be accessed using the bracket notation.
-  // Example: `response.headers['content-type']`
-  headers: {},
+        // `headers` the HTTP headers that the server responded with
+        // All header names are lower cased and can be accessed using the bracket notation.
+        // Example: `response.headers['content-type']`
+        headers: {},
 
-  // `config` is the config that was provided to `axios` for the request
-  config: {},
+    // `config` is the config that was provided to `axios` for the request
+    config: {},
 
-  // `request` is the request that generated this response
-  // The last ClientRequest instance in node.js (in redirects)
-  request: {}
+    // `request` is the request that generated this response
+    // The last ClientRequest instance in node.js (in redirects)
+    request: {}
 }
 ```
 

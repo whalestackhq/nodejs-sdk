@@ -20,7 +20,7 @@ function Client(key, secret) {
     this.secret = secret;
 
     // @string The current version of this SDK, used in the HTTP user agent (leave it as is)
-    this.clientVersion = '0.0.6'; // good way to pull this from package.json instead?
+    this.clientVersion = '0.0.7'; // good way to pull this from package.json instead?
 
     // @string Used in the HTTP user agent (leave it as is)
     this.clientName = 'nodejs-merchant-sdk';
