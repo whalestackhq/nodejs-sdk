@@ -20,7 +20,7 @@ function Client(key, secret) {
     this.secret = secret;
 
     // @string The current version of this SDK, used in the HTTP user agent (leave it as is)
-    this.clientVersion = '0.0.1'; // good way to pull this from package.json instead?
+    this.clientVersion = '0.0.6'; // good way to pull this from package.json instead?
 
     // @string Used in the HTTP user agent (leave it as is)
     this.clientName = 'nodejs-merchant-sdk';
@@ -35,8 +35,8 @@ function Client(key, secret) {
      * @param params (object), a list of GET parameters to be included in the request
      * @param callback (function), processes the response
      */
-    this.get = function(endpoint, params, callback) {
-        sendRequest('get', endpoint, params, callback);
+    this.get = async function(endpoint, params, callback) {
+        return await sendRequest('get', endpoint, params, callback);
     };
 
     /**
@@ -46,8 +46,8 @@ function Client(key, secret) {
      * @param params (object), a list of POST parameters to be included in the request
      * @param callback (function), processes the response
      */
-    this.post = function(endpoint, params, callback) {
-        sendRequest('post', endpoint, params, callback);
+    this.post = async function(endpoint, params, callback) {
+        return await sendRequest('post', endpoint, params, callback);
     };
 
     /**
@@ -57,8 +57,8 @@ function Client(key, secret) {
      * @param params (object), a list of PUT parameters to be included in the request
      * @param callback (function), processes the response
      */
-    this.put = function(endpoint, params, callback) {
-        sendRequest('put', endpoint, params, callback);
+    this.put = async function(endpoint, params, callback) {
+        return await sendRequest('put', endpoint, params, callback);
     };
 
     /**
@@ -68,12 +68,12 @@ function Client(key, secret) {
      * @param params (object), a list of DELETE parameters to be included in the request
      * @param callback (function), processes the response
      */
-    this.delete = function(endpoint, params, callback) {
-        sendRequest('delete', endpoint, params, callback);
+    this.delete = async function(endpoint, params, callback) {
+        return await sendRequest('delete', endpoint, params, callback);
     };
 
     // private validator function
-    const validateArgs  = function(method, endpoint, params, callback) {
+    const validateArgs = function(method, endpoint, params, callback) {
 
         if (!validateEndpoint(endpoint)) {
             this.log("Invalid endpoint given to " + method + " method.");
@@ -82,11 +82,6 @@ function Client(key, secret) {
 
         if (!validateParams(params)) {
             this.log("Invalid params given to " + method + " method.");
-            return false;
-        }
-
-        if (!validateCallback(callback)) {
-            this.log("Invalid callback given to " + method + " method.");
             return false;
         }
 
@@ -108,11 +103,6 @@ function Client(key, secret) {
 
         return !params;
 
-    };
-
-    // private validator function
-    const validateCallback = function(callback) {
-        return typeof callback === 'function';
     };
 
     // private function to build request configuration
@@ -139,23 +129,23 @@ function Client(key, secret) {
     }.bind(this);
 
     // private function to send the request
-    const sendRequest = function(method, endpoint, params, callback) {
+    const sendRequest = async function(method, endpoint, params) {
 
-        if (!validateArgs(method, endpoint, params, callback)) {
+        if (!validateArgs(method, endpoint, params)) {
             return;
         }
 
-        axios(buildConfig({
-            method: method,
-            url: endpoint,
-            params: method === 'get' ? params : null,
-            data: method === 'get' ? null : params
-        }))
-        .then(callback)
-        .catch(function(e) {
+        try {
+            return await axios(buildConfig({
+                method: method,
+                url: endpoint,
+                params: method === 'get' ? params : null,
+                data: method === 'get' ? null : params
+            }));
+        } catch (e) {
             this.log(JSON.stringify(e));
-            callback(e.response);
-        }.bind(this));
+            return e.response;
+        }
 
     }.bind(this);
 
