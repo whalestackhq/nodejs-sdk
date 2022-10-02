@@ -33,10 +33,9 @@ function Client(key, secret) {
      *
      * @param endpoint (string), e.g. /blockchains
      * @param params (object), a list of GET parameters to be included in the request
-     * @param callback (function), processes the response
      */
-    this.get = async function(endpoint, params, callback) {
-        return await sendRequest('get', endpoint, params, callback);
+    this.get = async function(endpoint, params) {
+        return await sendRequest('get', endpoint, params);
     };
 
     /**
@@ -44,10 +43,9 @@ function Client(key, secret) {
      *
      * @param endpoint (string), e.g. /checkout/hosted
      * @param params (object), a list of POST parameters to be included in the request
-     * @param callback (function), processes the response
      */
-    this.post = async function(endpoint, params, callback) {
-        return await sendRequest('post', endpoint, params, callback);
+    this.post = async function(endpoint, params) {
+        return await sendRequest('post', endpoint, params);
     };
 
     /**
@@ -55,10 +53,9 @@ function Client(key, secret) {
      *
      * @param endpoint (string), e.g. /checkout/hosted
      * @param params (object), a list of PUT parameters to be included in the request
-     * @param callback (function), processes the response
      */
-    this.put = async function(endpoint, params, callback) {
-        return await sendRequest('put', endpoint, params, callback);
+    this.put = async function(endpoint, params) {
+        return await sendRequest('put', endpoint, params);
     };
 
     /**
@@ -66,14 +63,13 @@ function Client(key, secret) {
      *
      * @param endpoint (string), e.g. /checkout/hosted
      * @param params (object), a list of DELETE parameters to be included in the request
-     * @param callback (function), processes the response
      */
-    this.delete = async function(endpoint, params, callback) {
-        return await sendRequest('delete', endpoint, params, callback);
+    this.delete = async function(endpoint, params) {
+        return await sendRequest('delete', endpoint, params);
     };
 
     // private validator function
-    const validateArgs = function(method, endpoint, params, callback) {
+    const validateArgs = function(method, endpoint, params) {
 
         if (!validateEndpoint(endpoint)) {
             this.log("Invalid endpoint given to " + method + " method.");
