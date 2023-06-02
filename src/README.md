@@ -1,12 +1,12 @@
-# COINQVEST Merchant SDK (NodeJS)
+# COINQVEST Payments API SDK (NodeJS)
 
-Official COINQVEST Merchant API SDK for NodeJS by www.coinqvest.com
+Official COINQVEST Payments API SDK for NodeJS by www.coinqvest.com
+
+Accepting cryptocurrency payments using the COINQVEST API is fast, secure, and easy. After you've signed up and obtained your [API key](https://www.coinqvest.com/en/api-settings), all you need to do is create a checkout or blockchain deposit address on Bitcoin, Lightning, Litecoin, Stellar, or other supported networks to get paid. You can also use he API for fiat on- and off-ramping via SWIFT or SEPA.
 
 This SDK implements the REST API documented at https://www.coinqvest.com/en/api-docs
 
 For SDKs in different programming languages, see https://www.coinqvest.com/en/api-docs#sdks
-
-Read our Merchant API [development guide](https://www.coinqvest.com/en/blog/guide-mastering-cryptocurrency-checkouts-with-coinqvest-merchant-apis-321ac139ce15) and the examples below to help you get started.
 
 Requirements
 ------------
@@ -28,221 +28,87 @@ const client = new CoinqvestClient(
 ```
 Get your API key and secret here: https://www.coinqvest.com/en/api-settings
 
-## Examples
+Guides
+------
 
-**Create a Customer** (https://www.coinqvest.com/en/api-docs#post-customer)
+* [Using the COINQVEST API](https://www.coinqvest.com/en/api-docs#getting-started)
+* [Building Checkouts](https://www.coinqvest.com/en/api-docs#building-checkouts)
+* [Authentication](https://www.coinqvest.com/en/api-docs#authentication) (handled by SDK)
+* [Brand Connect](https://www.coinqvest.com/en/api-docs#brand-connect) (white label checkouts on your own domain)
 
-Creates a customer object, which can be associated with checkouts, payments, and invoices. Checkouts associated with a customer generate more transaction details, help with your accounting, and can automatically create invoices for your customer and yourself.
+## Wallets and Deposits
 
+Your COINQVEST account comes equipped with dedicated deposit addresses for Bitcoin, Lightning, Litecoin, select assets on the Stellar Network, SWIFT, and SEPA, and other supported networks. You can receive blockchain payments within seconds after registering. The [GET /wallets](https://www.coinqvest.com/en/api-docs#get-wallets) and [GET /deposit-address](https://www.coinqvest.com/en/api-docs#deposit-address) endpoints return your blockchain addresses to start receiving custom deposits.
+
+**List Wallets and Deposit Addresses** (https://www.coinqvest.com/en/api-docs#get-wallets)
 ```javascript
-let response = await client.post('/customer', {
-    customer:{
-        email: 'john@doe.com',
-        firstname: 'John',
-        lastname: 'Doe',
-        company: 'ACME Inc.',
-        adr1: '810 Beach St',
-        adr2: 'Finance Department',
-        zip: 'CA 94133',
-        city: 'San Francisco',
-        countrycode: 'US'
-    }
-});
-
-console.log(response.status);
-console.log(response.data);
-
-if (response.status !== 200) {
-    // something went wrong, let's abort and debug by looking at our log file
-    console.log('Could not create customer. Inspect above log entry.');
-    return;
-}
-
-let customerId = response.data['customerId']; // store this persistently in your database
+let response = await client.get('/wallets');
 ```
 
-**Create a Hosted Checkout** (https://www.coinqvest.com/en/api-docs#post-checkout-hosted)
+## Checkouts
 
-Hosted checkouts are the simplest form of getting paid using the COINQVEST platform.
+COINQVEST checkouts provide fast and convenient ways for your customers to complete payment. We built a great user experience with hosted checkouts that can be fully branded. If you're not into payment pages, you can take full control over the entire checkout process using our backend checkout APIs. Click [here](https://www.coinqvest.com/en/api-docs#building-checkouts) to learn more about building checkouts.
 
-Using this endpoint, your server submits a set of parameters, such as the payment details including optional tax items, customer information, and settlement currency. Your server then receives a checkout URL in return, which is displayed back to your customer.
-
-Upon visiting the URL, your customer is presented with a checkout page hosted on COINQVEST servers. This page displays all the information the customer needs to complete payment.
-
+**Create a Hosted Checkout (Payment Link)** (https://www.coinqvest.com/en/api-docs#post-checkout-hosted)
 ```javascript
 let response = await client.post('/checkout/hosted', {
     charge:{
-        customerId: customerId, // associates this charge with a customer
-        billingCurrency: 'USD', // specifies the billing currency
+        billingCurrency: 'EUR', // specifies the billing currency
         lineItems: [{ // a list of line items included in this charge
-            description: 'T-Shirt',
-            netAmount: 10,
+            description: 'PCI Graphics Card',
+            netAmount: 169.99,
             quantity: 1
         }],
-        discountItems: [{ // an optional list of discounts
-            description: 'Loyalty Discount',
-            netAmount: 0.5
-        }],
-        shippingCostItems: [{ // an optional list of shipping and handling costs
-            description: 'Shipping and Handling',
-            netAmount: 3.99,
-            taxable: false // sometimes shipping costs are taxable
-        }],
-        taxItems: [{
-            name: 'CA Sales Tax',
-            percent: 0.0825 // 8.25% CA sales tax
-        }]
+        shippingCostItems: [], // an optional list of shipping and handling costs
+        taxItems: []
     },
     settlementAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN' // your settlement asset as given by GET /assets (or ORIGIN to omit conversion)
 });
-
-console.log(response.status);
-console.log(response.data);
-
-if (response.status !== 200) {
-    // something went wrong, let's abort and debug by looking at our log file
-    console.log('Could not create checkout.');
-    return;
-}
-
-// the checkout was created
-// response.data now contains an object as specified in the success response here: https://www.coinqvest.com/en/api-docs#post-checkout
-let checkoutId = response.data['checkoutId']; // store this persistently in your database
-let url = response.data['url']; // redirect your customer to this URL to complete the payment
 ```
 
-**Monitor Payment State** (https://www.coinqvest.com/en/api-docs#get-checkout)
+## Swaps And Transfers
 
-Once the payment is captured we notify you via email, [webhook](https://www.coinqvest.com/en/api-docs#webhook-concepts). You can also poll [GET /checkout](https://www.coinqvest.com/en/api-docs#get-checkout) for payment status updates:
+Once funds arrive in your account, either via completed checkouts or custom deposits, you have instant access to them and the ability to swap them into other assets or transfer them to your bank account or other blockchain accounts (we recommend to always forward funds into self-custody on cold storage). The [POST /swap](https://www.coinqvest.com/en/api-docs#post-swap) and [POST /transfer](https://www.coinqvest.com/en/api-docs#post-transfer) endpoints will get you started on swaps and transfers.
 
+**Swap Bitcoin to USDC** (https://www.coinqvest.com/en/api-docs#post-swap)
 ```javascript
-let response = await client.get('/checkout',  {id: checkoutId});
-
-console.log(response.status);
-console.log(response.data);
-
-if (response.status === 200) {
-    let state = response.data['checkout']['state'];
-    if (state === 'CHECKOUT_COMPLETED') {
-        console.log("The payment has completed and your account was credited. You can now ship the goods.");
-    } else {
-        // try again in 30 seconds or so...
-    }
-}
-```
-
-**Query your USD Wallet** (https://www.coinqvest.com/en/api-docs#get-wallet)
-```javascript
-let response = await client.get('/wallet', {assetCode: 'USD'});
-
-console.log(response.status);
-console.log(response.data);
-```
-
-**Query all Wallets** (https://www.coinqvest.com/en/api-docs#get-wallets)
-```javascript
-let response = await client.get('/wallets');
-
-console.log(response.status);
-console.log(response.data);
-```
-
-**Withdraw to your Bitcoin Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
-```javascript
-let response = await client.post('/withdrawal', {
-    sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USD wallet
-    sourceAmount: 100,
-    targetNetwork: 'BITCOIN', // a target network as given by GET /networks
-    targetAccount: {
-        address: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23'
-    }
+let response = await client.post('/swap', {
+    sourceAsset: 'BTC:GCQVEST7KIWV3KOSNDDUJKEPZLBFWKM7DUS4TCLW2VNVPCBGTDRVTEIT',
+    targetAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
+    targetAmount: 100
 });
-
-console.log(response.status);
-console.log(response.data);
 ```
 
-**Withdraw USDC to your Stellar Account** (https://www.coinqvest.com/en/api-docs#post-withdrawal)
+**Transfer USDC to your SEPA Bank** (https://www.coinqvest.com/en/api-docs#post-transfer)
 ```javascript
-let response = await client.post('/withdrawal', {
-    sourceAsset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // withdraw from your USD wallet
-    sourceAmount: 100,
-    targetNetwork: 'STELLAR', // a target network as given by GET /networks
-    targetAccount: {
-        account: 'bc1qj633nx575jm28smgcp3mx6n3gh0zg6ndr0ew23',
-        memo: 'Transfer Note',
-        memoType: 'text'
-    }
+let response = await client.post('/transfer', {
+    network: 'SEPA',
+    asset: 'USDC:GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
+    amount: 100,
+    targetAccount: 'A unique SEPA account label as previously specified in POST /target-account'
 });
-
-console.log(response.status);
-console.log(response.data);
 ```
 
-**Update a Customer** (https://www.coinqvest.com/en/api-docs#put-customer)
-```javascript
-let response = await client.put('/customer', {customer:{id: 'CUSTOMER-ID', email: 'john@doe-2.com'}});
+## Supported Assets, Currencies, and Networks
 
-console.log(response.status);
-console.log(response.data);
-```
-
-**Delete a Customer** (https://www.coinqvest.com/en/api-docs#delete-customer)
-```javascript
-let response = await client.delete('/customer', {id: 'CUSTOMER-ID'});
-
-console.log(response.status);
-console.log(response.data);
-```
-
-**List your 250 newest customers** (https://www.coinqvest.com/en/api-docs#get-customers)
-```javascript
-let response = await client.get('/wallet', {limit: 250});
-
-console.log(response.status);
-console.log(response.data);
-```
-
-**List all available assets** (https://www.coinqvest.com/en/api-docs#get-assets)
-```javascript
-let response = await client.get('/assets');
-
-console.log(response.status);
-console.log(response.data);
-
-**List all available networks** (https://www.coinqvest.com/en/api-docs#get-networks)
+**List all available Networks** (https://www.coinqvest.com/en/api-docs#get-networks)
 ```javascript
 let response = await client.get('/networks');
-
-console.log(response.status);
-console.log(response.data);
 ```
 
-**The response object** ([axios](https://github.com/axios/axios) HTTP response as given to your callback function)
+**List all available Assets** (https://www.coinqvest.com/en/api-docs#get-assets)
 ```javascript
-{
-    // `data` is the response that was provided by the server
-    data: {},
-
-    // `status` is the HTTP status code from the server response
-    status: 200,
-
-        // `statusText` is the HTTP status message from the server response
-        statusText: 'OK',
-
-        // `headers` the HTTP headers that the server responded with
-        // All header names are lower cased and can be accessed using the bracket notation.
-        // Example: `response.headers['content-type']`
-        headers: {},
-
-    // `config` is the config that was provided to `axios` for the request
-    config: {},
-
-    // `request` is the request that generated this response
-    // The last ClientRequest instance in node.js (in redirects)
-    request: {}
-}
+let response = await client.get('/assets');
 ```
+
+**List all available Billing Currencies** (https://www.coinqvest.com/en/api-docs#get-currencies)
+```javascript
+let response = await client.get('/currencies');
+```
+
+## Financial Reports and Accounting
+
+We don't leave you hanging with an obscure and complicated blockchain payment trail to figure out by yourself. All transactions on COINQVEST are aggregated into the Financial Reports section of your account and can even be associated with counter-parties, such as customers and beneficiaries. We provide CSV reports, charts, and beautiful analytics for all your in-house accounting needs.
 
 Please inspect https://www.coinqvest.com/en/api-docs for detailed API documentation or send us an email to service@coinqvest.com.
 
