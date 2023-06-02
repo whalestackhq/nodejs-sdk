@@ -2,7 +2,7 @@
   "author": "COINQVEST LLC",
   "name": "coinqvest-merchant-sdk",
   "description": "Official COINQVEST Merchant API SDK for NodeJS by www.coinqvest.com",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "./lib/index.js",
   "keywords": [
     "payment-gateway",

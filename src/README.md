@@ -2,7 +2,7 @@
 
 Official COINQVEST Payments API SDK for NodeJS by www.coinqvest.com
 
-Accepting cryptocurrency payments using the COINQVEST API is fast, secure, and easy. After you've signed up and obtained your [API key](https://www.coinqvest.com/en/api-settings), all you need to do is create a checkout or blockchain deposit address on Bitcoin, Lightning, Litecoin, Stellar, or other supported networks to get paid. You can also use he API for fiat on- and off-ramping via SWIFT or SEPA.
+Accepting cryptocurrency payments using the COINQVEST API is fast, secure, and easy. After you've signed up and obtained your [API key](https://www.coinqvest.com/en/api-settings), all you need to do is create a checkout or blockchain deposit address on Bitcoin, Lightning, Litecoin, Stellar, or other supported networks to get paid. You can also use the API for fiat on- and off-ramping via SWIFT or SEPA.
 
 This SDK implements the REST API documented at https://www.coinqvest.com/en/api-docs
 
