@@ -38,7 +38,7 @@ Guides
 
 ## Wallets and Deposits
 
-Your COINQVEST account comes equipped with dedicated deposit addresses for Bitcoin, Lightning, Litecoin, select assets on the Stellar Network, SWIFT, and SEPA, and other supported networks. You can receive blockchain payments within seconds after registering. The [GET /wallets](https://www.coinqvest.com/en/api-docs#get-wallets) and [GET /deposit-address](https://www.coinqvest.com/en/api-docs#deposit-address) endpoints return your blockchain addresses to start receiving custom deposits.
+Your COINQVEST account comes equipped with dedicated deposit addresses for Bitcoin, Lightning, Litecoin, Stellar, SWIFT, SEPA, and other supported networks. You can receive blockchain payments within seconds after registering. The [GET /wallets](https://www.coinqvest.com/en/api-docs#get-wallets) and [GET /deposit-address](https://www.coinqvest.com/en/api-docs#deposit-address) endpoints return your blockchain addresses to start receiving custom deposits.
 
 **List Wallets and Deposit Addresses** (https://www.coinqvest.com/en/api-docs#get-wallets)
 ```javascript
