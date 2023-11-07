@@ -3,27 +3,27 @@ const axios = require('axios').default;
 const crypto = require('crypto');
 
 /**
- * NodeJS implementation of a REST client for the COINQVEST Merchant API
- * see https://www.coinqvest.com/en/api-docs
+ * NodeJS implementation of a REST client for the Whalestack Payments API
+ * see https://www.whalestack.com/en/api-docs
  *
- * @constructor, initialize this with the API key and secret as given by https://www.coinqvest.com/en/api-settings
+ * @constructor, initialize this with the API key and secret as given by https://www.whalestack.com/en/api-settings
  *
- * @param key (string) Your COINQVEST API Key
- * @param secret (string) Your COINQVEST API Secret
+ * @param key (string) Your Whalestack API Key
+ * @param secret (string) Your Whalestack API Secret
  */
 function Client(key, secret) {
 
-    // @string The API Key as given by https://www.coinqvest.com/en/api-settings
+    // @string The API Key as given by https://www.whalestack.com/en/api-settings
     this.key = key;
 
-    // @string The API Secret as given by https://www.coinqvest.com/en/api-settings
+    // @string The API Secret as given by https://www.whalestack.com/en/api-settings
     this.secret = secret;
 
     // @string The current version of this SDK, used in the HTTP user agent (leave it as is)
     this.clientVersion = require('../package.json').version;
 
     // @string Used in the HTTP user agent (leave it as is)
-    this.clientName = 'nodejs-merchant-sdk';
+    this.clientName = 'nodejs-sdk';
 
     // @string The API version to which we connect (leave it as is)
     this.apiVersion = 'v1';
@@ -110,7 +110,7 @@ function Client(key, secret) {
 
         // build request config
         return Object.assign({
-            baseURL: 'https://www.coinqvest.com/api/' + this.apiVersion + '/',
+            baseURL: 'https://www.whalestack.com/api/' + this.apiVersion + '/',
             responseType: 'json',
             responseEncoding: 'utf8',
             headers: {
@@ -146,11 +146,11 @@ function Client(key, secret) {
     }.bind(this);
 
     /**
-     * Normalized Logging for COINQVEST SDK related events and errors.
+     * Normalized Logging for Whalestack SDK related events and errors.
      * @param message
      */
     this.log = function(message) {
-        console.log(new Date().toISOString() + ' [COINQVEST]: ' + message)
+        console.log(new Date().toISOString() + ' [Whalestack]: ' + message)
     };
 
 }
